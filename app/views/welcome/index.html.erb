@@ -1,1 +1,9 @@
 <div class="qwe"><%= @qwerty %></div>
+
+<%= form_with url: srt_to_doc_welcome_index_path do |f| %>
+  <%= f.file_field :srt %>
+  <%= f.submit %>
+<% end %>
+
+<br/>
+<%= link_to 'Generate a Caracal document', karakal_doc_welcome_index_path, target: :new %>

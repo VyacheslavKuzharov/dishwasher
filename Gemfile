@@ -15,6 +15,9 @@ gem 'sass-rails', '>= 6'
 gem 'jquery-rails'
 gem 'rails-ujs'
 
+gem 'caracal'
+gem 'caracal-rails'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -37,10 +40,10 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
+  # gem 'capybara', '>= 2.15'
+  # gem 'selenium-webdriver'
+  # # Easy installation and use of web drivers to run system tests with browsers
+  # gem 'webdrivers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
