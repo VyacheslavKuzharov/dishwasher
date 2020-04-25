@@ -16,7 +16,9 @@ class WelcomeController < ApplicationController
       qw = line.strip
       matching =
           if qw.match(/-->/).present?
-            qw.split('-->').first.strip[0...-1]
+            # qw.split('-->').first.strip[0...-1]
+            arr = qw.split('-->').first.split(':')
+            "#{arr[1]}:#{arr[2].split(',').first}"
 
           elsif !/\A\d+\z/.match(qw)
             qw
