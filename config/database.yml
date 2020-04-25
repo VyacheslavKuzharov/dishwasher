@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: dishwasher_development
+test:
+  <<: *default
+  database: dishwasher_test
+
+production:
+  <<: *default
+  database: dishwasher_production
+  username: dishwasher
+  password: <%= ENV['DISHWASHER_DATABASE_PASSWORD'] %>
