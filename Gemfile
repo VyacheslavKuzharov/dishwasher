@@ -19,6 +19,7 @@ gem 'caracal'
 gem 'caracal-rails'
 
 gem 'pdf-reader'
+gem "roo", "~> 2.8.0"
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

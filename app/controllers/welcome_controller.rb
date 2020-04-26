@@ -6,6 +6,7 @@ class WelcomeController < ApplicationController
   def srt_doc_landing; end
   def pdf_txt_cont_landing; end
   def pdf_txt_hbo_landing; end
+  def xlsx_txt_amedia_landing; end
 
 
   def srt_to_doc
@@ -54,15 +55,11 @@ class WelcomeController < ApplicationController
     path = "public/#{params[:pdf].original_filename.split('.').first}.txt"
     f = File.new(path, 'w')
     reader.pages.each do |page|
-
-      # p page.text.lines(chomp: true)
-
-      # puts "---page.text-----#{page.text}"
       page.text.each_line do |line|
         str = line.chomp.squeeze(" ")
         timecode = str[/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d):(?:[0-5]\d)/]
-        character = str[/(?<!\[)\b[A-Z]+\b(?![\w\s]*[\]])/]
-        dialogue = str.gsub(/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d):(?:[0-5]\d)|(?<!\[)\b[A-Z]+\b(?![\w\s]*[\]])/, '')
+        character = str[/(?<!\[)\b[A-Z][A-Z]+\b(?![\w\s]*[\]])/]
+        dialogue = str.gsub(/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d):(?:[0-5]\d)|(?<!\[)\b[A-Z][A-Z]+\b(?![\w\s]*[\]])/, '')
 
         if dialogue == ' Timecode Character Dialogue Translation'
           is_script_begin = true
@@ -84,10 +81,57 @@ class WelcomeController < ApplicationController
     end
 
     f.close
-    
+
     file = f.path
     File.open(file, 'r') do |f|
       send_data f.read.force_encoding('BINARY'), :filename => "#{params[:pdf].original_filename.split('.').first}.txt", :disposition => "attachment"
+    end
+    File.delete(file)
+  end
+
+  def xlsx_txt_amedia_parse
+    tmp = params[:xls].tempfile
+    xlsx = Roo::Spreadsheet.open(tmp)
+    path = "public/#{params[:xls].original_filename.split('.').first}.txt"
+    f = File.new(path, 'w')
+
+    xlsx.each_with_pagename do |name, sheet|
+      sheet.each do |ary|
+        next if ary.first == sheet.row(1).first
+        next if ary.first.blank?
+        next if ary[3].blank?
+
+        timecode = ary.first
+        character = ary[2]
+        dialogue = ary[3]
+
+        if timecode.present?
+          ary = timecode.split(':')
+          normalized_timecode = "#{ary[1]}:#{ary[2]}"
+
+          f.write("#{normalized_timecode.chomp.strip}\n")
+        end
+
+        if character.present?
+          normalized_character = character.split.first
+
+          f.write("#{normalized_character.chomp.strip}\n")
+        end
+
+        if dialogue.present?
+          dialogue = dialogue.gsub(/\r|\n|\t/,'')
+          dialogue = dialogue.gsub(/\b[A-Z][A-Z]+\b/, &:downcase)
+
+          f.write("#{dialogue.chomp.strip}\n")
+        end
+      end
+    end
+
+    f.close
+
+    file = f.path
+    File.open(file, 'r') do |f|
+      send_data f.read.force_encoding('BINARY'), :filename => "#{params[:xls].original_filename.split('.').first}.txt", :disposition => "attachment"
     end
     File.delete(file)
   end
