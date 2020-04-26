@@ -1,9 +1,11 @@
-<div class="qwe"><%= @qwerty %></div>
+<div class="qwe">
+  <%= link_to 'SRT to Doc', srt_doc_landing_welcome_index_path %>
+</div>
 
-<%= form_with url: srt_to_doc_welcome_index_path do |f| %>
-  <%= f.file_field :srt %>
-  <%= f.submit %>
-<% end %>
+<p></p>
 
-<br/>
-<%= link_to 'Generate a Caracal document', karakal_doc_welcome_index_path, target: :new %>
+<div class="qwe">
+  <%= link_to 'PDF to txt(contentica)', pdf_txt_cont_landing_welcome_index_path %>
+</div>
+
+
