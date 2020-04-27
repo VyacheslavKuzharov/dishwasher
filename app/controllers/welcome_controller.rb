@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
 
   def index; end
   def srt_doc_landing; end
-  def pdf_txt_cont_landing; end
+  def pdf_txt_3_landing; end
   def pdf_txt_hbo_landing; end
   def xlsx_txt_amedia_landing; end
 
@@ -19,7 +19,6 @@ class WelcomeController < ApplicationController
       qw = line.strip
       matching =
           if qw.match(/-->/).present?
-            # qw.split('-->').first.strip[0...-1]
             arr = qw.split('-->').first.split(':')
             "#{arr[1]}:#{arr[2].split(',').first}"
 
