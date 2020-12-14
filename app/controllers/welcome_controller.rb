@@ -5,6 +5,7 @@ class WelcomeController < ApplicationController
   def index; end
   def srt_doc_landing; end
   def pdf_txt_3_landing; end
+  def pdf_rows_3_landing; end
   def pdf_txt_hbo_landing; end
   def xlsx_txt_amedia_landing; end
 
@@ -131,6 +132,47 @@ class WelcomeController < ApplicationController
     file = f.path
     File.open(file, 'r') do |f|
       send_data f.read.force_encoding('BINARY'), :filename => "#{params[:xls].original_filename.split('.').first}.txt", :disposition => "attachment"
+    end
+    File.delete(file)
+  end
+
+
+
+  def pdf_rows_cont_parse
+    tmp = params[:pdf].tempfile
+    reader = PDF::Reader.new(tmp)
+    path = "public/#{params[:pdf].original_filename.split('.').first}.txt"
+    f = File.new(path, 'w')
+    reader.pages.each do |page|
+      page.text.each_line do |line|
+        next if page.number == 1
+        str = line.chomp.squeeze(" ")
+
+        timecode = str[/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d):(?:[0-5]\d)/]
+
+
+        str2 = str.gsub(/(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d):(?:[0-5]\d)/, '')
+
+        if str.present?
+          next if str.match(/Page/).present?
+
+          if timecode.present?
+            ary = timecode.split(':')
+            normalized_timecode = "#{ary[1]}:#{ary[2]}"
+
+            f.write("#{normalized_timecode.chomp.strip}\n")
+          end
+
+          f.write("#{str2.chomp.strip}\n")
+        end
+      end
+    end
+
+    f.close
+
+    file = f.path
+    File.open(file, 'r') do |f|
+      send_data f.read.force_encoding('BINARY'), :filename => "#{params[:pdf].original_filename.split('.').first}.txt", :disposition => "attachment"
     end
     File.delete(file)
   end
