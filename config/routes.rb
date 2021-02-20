@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       post :pdf_rows_cont_parse
       post :xlsx_txt_amedia_parse
       get :karakal_doc, format: 'docx'
+      get :colorify_doc
     end
   end
+
+  resources :colorifys
 end

@@ -1,0 +1,11 @@
+<div>
+  <%= form_with url: colorifys_path do |f| %>
+    <% @doc.characters_data['characters'].each do |character| %>
+      <p>
+        <%= character %>
+        <%= f.text_field character %>
+      </p>
+    <% end %>
+    <%= f.submit 'upload' %>
+  <% end %>
+</div>
