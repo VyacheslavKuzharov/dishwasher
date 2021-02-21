@@ -23,6 +23,7 @@ gem "roo", "~> 2.8.0"
 
 gem 'docx'
 gem 'bootstrap', '~> 5.0.0.beta1'
+gem 'rack-timeout'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
