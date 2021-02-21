@@ -1,11 +1,13 @@
-<div>
-  <%= form_with url: colorifys_path do |f| %>
+<div class="container">
+  <%= form_with url: colorify_update_car_path(@doc.id), method: :put do |f| %>
     <% @doc.characters_data['characters'].each do |character| %>
-      <p>
-        <%= character %>
-        <%= f.text_field character %>
-      </p>
+      <div class="mb-2">
+        <%= f.color_field "color[#{character}]", class: 'form-control-color', value: '#ffffff' %>
+        <%= f.label character %>
+      </div>
     <% end %>
-    <%= f.submit 'upload' %>
+    <div class="mt-4">
+      <%= f.submit %>
+    </div>
   <% end %>
 </div>

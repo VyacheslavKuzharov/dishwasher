@@ -17,5 +17,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :colorifys
+  resources :colorifys do
+    put :update_car, format: 'docx'
+  end
 end

@@ -1,6 +1,8 @@
-<div class="qwe">Upload Doc file</div>
-<p></p>
-<%= form_with url: colorifys_path do |f| %>
-  <%= f.file_field :docx %>
-  <%= f.submit 'upload' %>
-<% end %>
+<div class="container">
+  <div class="qwe">Upload Doc file</div>
+  <p></p>
+  <%= form_with url: colorifys_path do |f| %>
+    <%= f.file_field :docx %>
+    <%= f.submit 'upload' %>
+  <% end %>
+</div>

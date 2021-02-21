@@ -1,0 +1,19 @@
+#-----------------------------------------------------
+# Tables
+#-----------------------------------------------------
+
+colors = params[:color].delete_if {|key, value| value == "#ffffff" }
+
+docx.h2 'Simple Tables2'
+docx.table @doc_datas, border_size: 4 do
+  rows.each_with_index do |row,index|
+    text_content = row[1].contents[0].runs[0].text_content
+    characters = colors.keys
+    target_color = colors[text_content]&.gsub('#', '')
+
+    cell_style rows[0],    bold: true,   background: 'dddddd'
+    cell_style cells,      size: 18, margins: { top: 100, bottom: 0, left: 100, right: 100 }
+    cell_style cols[1][index], background: characters.include?(text_content) ? "#{target_color}" : 'ffffff'
+  end
+end
+

@@ -7,6 +7,16 @@ class ColorifysController < ApplicationController
     @doc = Doc.find(params[:id])
   end
 
+  def update_car
+    doc = Doc.find(params[:colorify_id])
+    @doc_datas = doc.doc_data['doc_data']
+    docx = Caracal::Document.new('example_document1.docx')
+
+    respond_to do |format|
+      format.docx { headers["Content-Disposition"] = "attachment; filename=\"#{doc.doc_data['filename']}\"" }
+    end
+  end
+
   def create
     doc = Docx::Document.open(params[:docx])
     doc_data = []
@@ -34,7 +44,7 @@ class ColorifysController < ApplicationController
       end
     end
 
-    doc = Doc.create(doc_data: { doc_data: doc_data }, characters_data: {characters: characters} )
+    doc = Doc.create(doc_data: {filename: params[:docx].original_filename, doc_data: doc_data }, characters_data: {characters: characters} )
 
     redirect_to colorify_path(doc)
   end
